@@ -71,9 +71,11 @@
     </q-drawer>
 
     <q-page-container>
-      <keep-alive>
-        <router-view />
-      </keep-alive>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
@@ -162,10 +164,4 @@ export default defineComponent({
   opacity: 0.2;
   filter: grayscale(100%);
 }
-
-/* @media (max-width: $breakpoint-xs-max) {
-  .text-h3 {
-    color: #000;
-  }
-} */
 </style>
