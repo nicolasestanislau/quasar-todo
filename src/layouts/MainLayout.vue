@@ -50,6 +50,14 @@
 
             <q-item-section> Ajuda </q-item-section>
           </q-item>
+
+          <q-item to="/adtags" exact clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="article" />
+            </q-item-section>
+
+            <q-item-section> Anúncios </q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
 

@@ -5,7 +5,8 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('src/pages/Todo.vue') },
-      { path: '/help', component: () => import('src/pages/Help.vue') }
+      { path: '/help', component: () => import('src/pages/Help.vue') },
+      { path: '/adtags', component: () => import('src/pages/AdTags.vue') },
     ]
   },
 
