@@ -1,8 +1,11 @@
 <template>
   <q-page class="bg-grey-3 q-pa-lg">
     <div class="imgHover absolute-top q-pa-lg">
-      <img
+<!--       <img
         src="https://istoe.com.br/wp-content/themes/tema_istoe/assets/svg/logo-istoe.svg"
+      /> -->
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/1/13/LOGO_OF_LOGO.svg"
       />
     </div>
     <div class="tableContainer">
@@ -364,16 +367,19 @@ export default defineComponent({
         })
         .onOk(() => {
           this.currencyData.splice(item.rowIndex, 1);
-          this.$q.notify("anúncio excluído");
+          this.$q.notify({
+            type: "negative",
+            message: "anúncio excluído",
+          });
         });
     },
     showModal() {
       this.show_add_dialog = true;
     },
     addRow() {
-      if(this.addedItem.metadata == '') {
-          alert('n foi')
-      }
+/*       if (this.addedItem.metadata == "") {
+        alert("n foi");
+      } */
       this.currencyData.push(this.addedItem);
 
       this.$q.notify({
@@ -416,7 +422,7 @@ export default defineComponent({
     justify-content: center;
   }
   .mobileModal {
-      max-width: 80vw;
+    max-width: 80vw;
   }
 }
 .tableContainer {
@@ -425,5 +431,4 @@ export default defineComponent({
   display: flex;
   justify-content: flex-end;
 }
-
 </style>

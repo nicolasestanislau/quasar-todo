@@ -43,20 +43,19 @@
             <q-item-section> Todo </q-item-section>
           </q-item>
 
-          <q-item to="/help" exact clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="help" />
-            </q-item-section>
-
-            <q-item-section> Ajuda </q-item-section>
-          </q-item>
-
           <q-item to="/adtags" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="article" />
             </q-item-section>
 
             <q-item-section> Anúncios </q-item-section>
+          </q-item>
+          <q-item to="/help" exact clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="help" />
+            </q-item-section>
+
+            <q-item-section> Ajuda </q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -73,7 +72,8 @@
             />
           </q-avatar>
           <div class="text-weight-bold">Nicolas Estanislau</div>
-          <div>@nicolas_zzz</div>
+          <div><a style="text-decoration: none; color:#fff" target="_blank" href="https://www.linkedin.com/in/nicolas-estanislau-048928175/">linkedin</a></div>
+        <div>@nicolas_zzz</div>
         </div>
       </q-img>
     </q-drawer>
