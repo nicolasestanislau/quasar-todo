@@ -1,12 +1,12 @@
 <template>
   <q-page class="bg-grey-3 q-pa-lg">
     <div class="imgHover absolute-top q-pa-lg">
-<!--       <img
-        src="https://istoe.com.br/wp-content/themes/tema_istoe/assets/svg/logo-istoe.svg"
-      /> -->
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/1/13/LOGO_OF_LOGO.svg"
+        src="https://istoe.com.br/wp-content/themes/tema_istoe/assets/svg/logo-istoe.svg"
       />
+      <!--       <img
+        src="https://upload.wikimedia.org/wikipedia/commons/1/13/LOGO_OF_LOGO.svg"
+      /> -->
     </div>
     <div class="tableContainer">
       <q-btn @click="showModal" color="primary" label="Novo Anúncio" />
@@ -151,24 +151,38 @@
         </q-card-section>
         <q-separator inset></q-separator>
         <q-card-section class="q-pt-none">
-          <q-form class="q-gutter-md">
+          <q-form @submit.prevent.stop="onSubmit" class="q-gutter-md">
             <q-list>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Nome</q-item-label>
-                  <q-input dense outlined v-model="addedItem.name" />
+                  <q-input
+                    lazy-rules
+                    :rules="nameRules"
+                    dense
+                    outlined
+                    v-model="addedItem.name"
+                  />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Provedor</q-item-label>
-                  <q-input dense outlined v-model="addedItem.provider" />
+                  <q-input
+                    lazy-rules
+                    :rules="providerRules"
+                    dense
+                    outlined
+                    v-model="addedItem.provider"
+                  />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Script</q-item-label>
                   <q-input
+                    lazy-rules
+                    :rules="scriptRules"
                     type="textarea"
                     dense
                     outlined
@@ -179,19 +193,33 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Metadados</q-item-label>
-                  <q-input dense outlined v-model="addedItem.metadata" />
+                  <q-input
+                    lazy-rules
+                    :rules="metadataRules"
+                    dense
+                    outlined
+                    v-model="addedItem.metadata"
+                  />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Cobrança</q-item-label>
-                  <q-input dense outlined v-model="addedItem.charge_type" />
+                  <q-input
+                    lazy-rules
+                    :rules="charge_typeRules"
+                    dense
+                    outlined
+                    v-model="addedItem.charge_type"
+                  />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Faturamento</q-item-label>
                   <q-input
+                    lazy-rules
+                    :rules="billing_value"
                     type="number"
                     dense
                     outlined
@@ -202,30 +230,35 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Posição</q-item-label>
-                  <q-input dense outlined v-model="addedItem.position" />
+                  <q-input
+                    lazy-rules
+                    :rules="position"
+                    dense
+                    outlined
+                    v-model="addedItem.position"
+                  />
                 </q-item-section>
               </q-item>
+              <q-card-section>
+                <q-card-actions align="right">
+                  <q-btn
+                    flat
+                    label="Cancelar"
+                    color="negative"
+                    dense
+                    v-close-popup
+                  ></q-btn>
+                  <q-btn
+                    flat
+                    label="Cadastrar"
+                    color="primary"
+                    dense
+                    type="submit"
+                  ></q-btn>
+                </q-card-actions>
+              </q-card-section>
             </q-list>
           </q-form>
-        </q-card-section>
-        <q-card-section>
-          <q-card-actions align="right">
-            <q-btn
-              flat
-              label="Cancelar"
-              color="negative"
-              dense
-              v-close-popup
-            ></q-btn>
-            <q-btn
-              flat
-              label="Cadastrar"
-              color="primary"
-              dense
-              v-close-popup
-              @click="addRow"
-            ></q-btn>
-          </q-card-actions>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -328,17 +361,23 @@ export default defineComponent({
           align: "left",
         },
       ],
-      /*       rows: [
-        {
-          name: "ad1",
-          provider: "google",
-          script: "some script",
-          metadata: "metadados",
-          charge_type: "cobrança 1",
-          billing_value: "50%",
-          position: "top",
-        },
-      ], */
+      nameRules: [(val) => (val && val.length > 0) || "Por favor, digite algo"],
+      providerRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite algo",
+      ],
+      scriptRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite algo",
+      ],
+      metadataRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite algo",
+      ],
+      charge_typeRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite algo",
+      ],
+      billing_value: [
+        (val) => (val && val.length > 0) || "Por favor, digite algo",
+      ],
+      position: [(val) => (val && val.length > 0) || "Por favor, digite algo"],
     };
   },
 
@@ -374,18 +413,6 @@ export default defineComponent({
         });
     },
     showModal() {
-      this.show_add_dialog = true;
-    },
-    addRow() {
-/*       if (this.addedItem.metadata == "") {
-        alert("n foi");
-      } */
-      this.currencyData.push(this.addedItem);
-
-      this.$q.notify({
-        type: "positive",
-        message: `Item '${this.addedItem.name}' cadastrado.`,
-      });
       let defaultItemAdd = {
         name: "",
         provider: "",
@@ -396,6 +423,22 @@ export default defineComponent({
         positions: "",
       };
       this.addedItem = defaultItemAdd;
+      this.show_add_dialog = true;
+    },
+    close() {
+      this.show_add_dialog = false;
+    },
+    addRow() {
+      this.currencyData.push(this.addedItem);
+
+      this.$q.notify({
+        type: "positive",
+        message: `Item '${this.addedItem.name}' cadastrado.`,
+      });
+      this.close();
+    },
+    onSubmit() {
+      this.addRow();
     },
   },
 });
