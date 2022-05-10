@@ -7,6 +7,7 @@ const routes = [
       { path: '', component: () => import('src/pages/Todo.vue') },
       { path: '/help', component: () => import('src/pages/Help.vue') },
       { path: '/adtags', component: () => import('src/pages/AdTags.vue') },
+      { path: '/form', component: () => import('src/pages/Form.vue') },
     ]
   },
 

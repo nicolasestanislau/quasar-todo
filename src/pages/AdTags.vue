@@ -151,12 +151,13 @@
         </q-card-section>
         <q-separator inset></q-separator>
         <q-card-section class="q-pt-none">
-          <q-form @submit.prevent.stop="onSubmit" class="q-gutter-md">
+          <form @submit.prevent.stop="onSubmit" class="q-gutter-md">
             <q-list>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Nome</q-item-label>
                   <q-input
+                    ref="nameRef"
                     lazy-rules
                     :rules="nameRules"
                     dense
@@ -169,6 +170,7 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Provedor</q-item-label>
                   <q-input
+                    ref="providerRef"
                     lazy-rules
                     :rules="providerRules"
                     dense
@@ -181,6 +183,7 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Script</q-item-label>
                   <q-input
+                    ref="scriptRef"
                     lazy-rules
                     :rules="scriptRules"
                     type="textarea"
@@ -194,6 +197,7 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Metadados</q-item-label>
                   <q-input
+                    ref="metadataRef"
                     lazy-rules
                     :rules="metadataRules"
                     dense
@@ -206,6 +210,7 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Cobrança</q-item-label>
                   <q-input
+                    ref="charge_typeRef"
                     lazy-rules
                     :rules="charge_typeRules"
                     dense
@@ -218,8 +223,9 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Faturamento</q-item-label>
                   <q-input
+                    ref="billing_valueRef"
                     lazy-rules
-                    :rules="billing_value"
+                    :rules="billing_valueRules"
                     type="number"
                     dense
                     outlined
@@ -231,8 +237,9 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Posição</q-item-label>
                   <q-input
+                    ref="positionRef"
                     lazy-rules
-                    :rules="position"
+                    :rules="positionRules"
                     dense
                     outlined
                     v-model="addedItem.position"
@@ -258,7 +265,7 @@
                 </q-card-actions>
               </q-card-section>
             </q-list>
-          </q-form>
+          </form>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -266,182 +273,266 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { useQuasar } from "quasar";
+import { ref } from "vue";
 
-const defaultItem = {
-  name: "",
-  provider: "",
-  script: "",
-  metadata: "",
-  charge_type: "",
-  billing_value: "",
-  positions: "",
-};
-const rows = [
-  {
-    name: "ad1",
-    provider: "google",
-    script: "some script",
-    metadata: "metadados",
-    charge_type: "cobrança 1",
-    billing_value: 50,
-    position: "top",
-  },
-  {
-    name: "ad2",
-    provider: "google",
-    script: "some script",
-    metadata: "metadados",
-    charge_type: "cobrança 1",
-    billing_value: 50,
-    position: "top",
-  },
-  {
-    name: "ad3",
-    provider: "google",
-    script: "some script",
-    metadata: "metadados",
-    charge_type: "cobrança 1",
-    billing_value: 50,
-    position: "top",
-  },
-];
-export default defineComponent({
-  data() {
+export default {
+  setup() {
+    let show_add_dialog = ref(false);
+    let show_dialog = ref(false);
+    const $q = useQuasar();
+    const defaultItem = ref({
+      name: "",
+      provider: "",
+      script: "",
+      metadata: "",
+      charge_type: "",
+      billing_value: "",
+      position: "",
+    });
+    const columns = ref([
+      {
+        name: "name",
+        label: "Nome",
+        field: "name",
+        sortable: true,
+        align: "left",
+      },
+      {
+        name: "provider",
+        label: "Provedor",
+        field: "provider",
+        align: "left",
+      },
+      { name: "script", label: "Script", field: "script", align: "left" },
+      {
+        name: "metadata",
+        label: "Metadados",
+        field: "metadata",
+        align: "left",
+      },
+      {
+        name: "charge_type",
+        label: "Tipo de Cobrança",
+        field: "charge_type",
+        align: "left",
+      },
+      {
+        name: "billing_value",
+        label: "Faturamento",
+        field: "billing_value",
+        align: "left",
+      },
+      {
+        name: "position",
+        label: "Posição",
+        field: "position",
+        align: "left",
+      },
+      {
+        name: "action",
+        label: "Ações",
+        field: "action",
+        align: "left",
+      },
+    ]);
+    const rows = ref([
+      {
+        name: "ad1",
+        provider: "google",
+        script: "some script",
+        metadata: "metadados",
+        charge_type: "cobrança 1",
+        billing_value: 50,
+        position: "top",
+      },
+      {
+        name: "ad2",
+        provider: "google",
+        script: "some script",
+        metadata: "metadados",
+        charge_type: "cobrança 1",
+        billing_value: 50,
+        position: "top",
+      },
+      {
+        name: "ad3",
+        provider: "google",
+        script: "some script",
+        metadata: "metadados",
+        charge_type: "cobrança 1",
+        billing_value: 50,
+        position: "top",
+      },
+    ]);
+    const nameRef = ref(null);
+    const providerRef = ref(null);
+    const scriptRef = ref(null);
+    const metadataRef = ref(null);
+    const charge_typeRef = ref(null);
+    const billing_valueRef = ref(null);
+    const positionRef = ref(null);
+    const editedItem = ref(defaultItem);
+    const addedItem = ref(defaultItem);
+    const editedIndex = ref(-1);
+    const currencyData = ref(rows);
     return {
-      show_dialog: false,
-      show_add_dialog: false,
-      editedItem: defaultItem,
-      addedItem: defaultItem,
-      editedIndex: -1,
-      currencyData: rows,
-      columns: [
-        {
-          name: "name",
-          label: "Nome",
-          field: "name",
-          sortable: true,
-          align: "left",
-        },
-        {
-          name: "provider",
-          label: "Provedor",
-          field: "provider",
-          align: "left",
-        },
-        { name: "script", label: "Script", field: "script", align: "left" },
-        {
-          name: "metadata",
-          label: "Metadados",
-          field: "metadata",
-          align: "left",
-        },
-        {
-          name: "charge_type",
-          label: "Tipo de Cobrança",
-          field: "charge_type",
-          align: "left",
-        },
-        {
-          name: "billing_value",
-          label: "Faturamento",
-          field: "billing_value",
-          align: "left",
-        },
-        {
-          name: "position",
-          label: "Posição",
-          field: "position",
-          align: "left",
-        },
-        {
-          name: "action",
-          label: "Ações",
-          field: "action",
-          align: "left",
-        },
-      ],
+      defaultItem,
+      columns,
+      rows,
+      editedItem,
+      addedItem,
+      editedIndex,
+      currencyData,
+      show_add_dialog,
+      show_dialog,
+
+      nameRef,
       nameRules: [(val) => (val && val.length > 0) || "Por favor, digite algo"],
+
+      providerRef,
       providerRules: [
         (val) => (val && val.length > 0) || "Por favor, digite algo",
       ],
+
+      scriptRef,
       scriptRules: [
         (val) => (val && val.length > 0) || "Por favor, digite algo",
       ],
+
+      metadataRef,
       metadataRules: [
         (val) => (val && val.length > 0) || "Por favor, digite algo",
       ],
+
+      charge_typeRef,
       charge_typeRules: [
         (val) => (val && val.length > 0) || "Por favor, digite algo",
       ],
-      billing_value: [
+
+      billing_valueRef,
+      billing_valueRules: [
         (val) => (val && val.length > 0) || "Por favor, digite algo",
       ],
-      position: [(val) => (val && val.length > 0) || "Por favor, digite algo"],
-    };
-  },
 
-  methods: {
-    editRow(item) {
-      this.editedIndex = this.currencyData.findIndex(
-        (v, i) => v.name === item.key
-      );
-      this.editedItem = Object.assign({}, item.row);
-      this.show_dialog = true;
-    },
-    updateRow() {
-      this.currencyData.splice(this.editedIndex, 1, this.editedItem);
-      this.$q.notify({
-        type: "positive",
-        message: `Item '${this.editedItem.name}' atualizado.`,
-      });
-    },
-    deleteRow(item) {
-      this.$q
-        .dialog({
+      positionRef,
+      positionRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite algo",
+      ],
+
+      /* function */
+      editRow(item) {
+        this.editedIndex = this.currencyData.findIndex(
+          (v, i) => v.name === item.key
+        );
+        this.editedItem = Object.assign({}, item.row);
+        this.show_dialog = true;
+      },
+      updateRow() {
+        console.log(currencyData)
+        currencyData.value.splice(editedIndex.value, 1, editedItem.value);
+        $q.notify({
+          type: "positive",
+          message: `Item '${editedItem.value.name}' atualizado.`,
+        });
+      },
+      deleteRow(item) {
+        $q.dialog({
           title: item.key,
           message: "Quer excluir este anúncio?",
           cancel: true,
           persistent: true,
-        })
-        .onOk(() => {
+        }).onOk(() => {
           this.currencyData.splice(item.rowIndex, 1);
-          this.$q.notify({
+          $q.notify({
             type: "negative",
             message: "anúncio excluído",
           });
         });
-    },
-    showModal() {
-      let defaultItemAdd = {
-        name: "",
-        provider: "",
-        script: "",
-        metadata: "",
-        charge_type: "",
-        billing_value: "",
-        positions: "",
-      };
-      this.addedItem = defaultItemAdd;
-      this.show_add_dialog = true;
-    },
-    close() {
-      this.show_add_dialog = false;
-    },
-    addRow() {
-      this.currencyData.push(this.addedItem);
+      },
 
-      this.$q.notify({
-        type: "positive",
-        message: `Item '${this.addedItem.name}' cadastrado.`,
-      });
-      this.close();
-    },
-    onSubmit() {
-      this.addRow();
-    },
+      close() {
+        let defaultItemAdd = {
+          name: "",
+          provider: "",
+          script: "",
+          metadata: "",
+          charge_type: "",
+          billing_value: "",
+          positions: "",
+        };
+        this.addedItem = defaultItemAdd;
+        show_add_dialog.value = false;
+      },
+      /*       cancel() {
+        let defaultItemAdd = {
+          name: "",
+          provider: "",
+          script: "",
+          metadata: "",
+          charge_type: "",
+          billing_value: "",
+          positions: "",
+        };
+        this.addedItem = defaultItemAdd;
+      }, */
+      showModal() {
+        /*         let defaultItemAdd = {
+          name: "",
+          provider: "",
+          script: "",
+          metadata: "",
+          charge_type: "",
+          billing_value: "",
+          positions: "",
+        };
+        addedItem = defaultItemAdd */
+
+        console.log(addedItem.value);
+        addedItem.value.name = null;
+        addedItem.value.provider = null;
+        addedItem.value.script = null;
+        addedItem.value.metadata = null;
+        addedItem.value.charge_type = null;
+        addedItem.value.billing_value = null;
+        addedItem.value.position = null;
+        show_add_dialog.value = true;
+      },
+      addRow() {
+        this.currencyData.push(this.addedItem);
+
+        $q.notify({
+          type: "positive",
+          message: `Item '${this.addedItem.name}' cadastrado.`,
+        });
+        this.close();
+      },
+      onSubmit() {
+        nameRef.value.validate();
+        providerRef.value.validate();
+        scriptRef.value.validate();
+        metadataRef.value.validate();
+        charge_typeRef.value.validate();
+        billing_valueRef.value.validate();
+        positionRef.value.validate();
+
+        if (
+          nameRef.value.hasError ||
+          providerRef.value.hasError ||
+          scriptRef.value.hasError ||
+          metadataRef.value.hasError ||
+          charge_typeRef.value.hasError ||
+          billing_valueRef.value.hasError ||
+          positionRef.value.hasError
+        ) {
+          // form has error
+        } else {
+          this.addRow();
+        }
+      },
+    };
   },
-});
+};
 </script>
 
 <style lang="scss">
