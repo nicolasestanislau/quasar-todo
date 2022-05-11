@@ -56,24 +56,41 @@
         </q-card-section>
         <q-separator inset></q-separator>
         <q-card-section class="q-pt-none">
-          <q-form class="q-gutter-md">
+          <form @submit.prevent.stop="onSubmitUpdate" class="q-gutter-md">
             <q-list>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Nome</q-item-label>
-                  <q-input dense outlined v-model="editedItem.name" />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Provedor</q-item-label>
-                  <q-input dense outlined v-model="editedItem.provider" />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Script</q-item-label>
+                  <q-item-label class="q-pb-xs">Nome *</q-item-label>
                   <q-input
+                    ref="nameRef"
+                    lazy-rules
+                    :rules="nameRules"
+                    dense
+                    outlined
+                    v-model="editedItem.name"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Provedor *</q-item-label>
+                  <q-input
+                    ref="providerRef"
+                    lazy-rules
+                    :rules="providerRules"
+                    dense
+                    outlined
+                    v-model="editedItem.provider"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Script *</q-item-label>
+                  <q-input
+                    ref="scriptRef"
+                    lazy-rules
+                    :rules="scriptRules"
                     type="textarea"
                     dense
                     outlined
@@ -83,20 +100,37 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Metadados</q-item-label>
-                  <q-input dense outlined v-model="editedItem.metadata" />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Tipo de Cobrança</q-item-label>
-                  <q-input dense outlined v-model="editedItem.charge_type" />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Faturamento</q-item-label>
+                  <q-item-label class="q-pb-xs">Metadados *</q-item-label>
                   <q-input
+                    ref="metadataRef"
+                    lazy-rules
+                    :rules="metadataRules"
+                    dense
+                    outlined
+                    v-model="editedItem.metadata"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Tipo de Cobrança *</q-item-label>
+                  <q-input
+                    ref="charge_typeRef"
+                    lazy-rules
+                    :rules="charge_typeRules"
+                    dense
+                    outlined
+                    v-model="editedItem.charge_type"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Faturamento *</q-item-label>
+                  <q-input
+                    ref="billing_valueRef"
+                    lazy-rules
+                    :rules="billing_valueRules"
                     type="number"
                     dense
                     outlined
@@ -106,31 +140,31 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Posição</q-item-label>
-                  <q-input dense outlined v-model="editedItem.position" />
+                  <q-item-label class="q-pb-xs">Posição *</q-item-label>
+                  <q-input
+                    ref="positionRef"
+                    lazy-rules
+                    :rules="positionRules"
+                    dense
+                    outlined
+                    v-model="editedItem.position"
+                  />
                 </q-item-section>
               </q-item>
+              <q-card-section>
+                <q-card-actions align="right">
+                  <q-btn
+                    flat
+                    label="Cancelar"
+                    color="negative"
+                    dense
+                    v-close-popup
+                  ></q-btn>
+                  <q-btn label="OK" color="primary" dense type="submit"></q-btn>
+                </q-card-actions>
+              </q-card-section>
             </q-list>
-          </q-form>
-        </q-card-section>
-        <q-card-section>
-          <q-card-actions align="right">
-            <q-btn
-              flat
-              label="Cancelar"
-              color="negative"
-              dense
-              v-close-popup
-            ></q-btn>
-            <q-btn
-              flat
-              label="OK"
-              color="primary"
-              dense
-              v-close-popup
-              @click="updateRow"
-            ></q-btn>
-          </q-card-actions>
+          </form>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -155,7 +189,7 @@
             <q-list>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Nome</q-item-label>
+                  <q-item-label class="q-pb-xs">Nome *</q-item-label>
                   <q-input
                     ref="nameRef"
                     lazy-rules
@@ -168,7 +202,7 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Provedor</q-item-label>
+                  <q-item-label class="q-pb-xs">Provedor *</q-item-label>
                   <q-input
                     ref="providerRef"
                     lazy-rules
@@ -181,7 +215,7 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Script</q-item-label>
+                  <q-item-label class="q-pb-xs">Script *</q-item-label>
                   <q-input
                     ref="scriptRef"
                     lazy-rules
@@ -195,7 +229,7 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Metadados</q-item-label>
+                  <q-item-label class="q-pb-xs">Metadados *</q-item-label>
                   <q-input
                     ref="metadataRef"
                     lazy-rules
@@ -208,7 +242,9 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Tipo de Cobrança</q-item-label>
+                  <q-item-label class="q-pb-xs"
+                    >Tipo de Cobrança *</q-item-label
+                  >
                   <q-input
                     ref="charge_typeRef"
                     lazy-rules
@@ -221,7 +257,7 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Faturamento</q-item-label>
+                  <q-item-label class="q-pb-xs">Faturamento *</q-item-label>
                   <q-input
                     ref="billing_valueRef"
                     lazy-rules
@@ -235,7 +271,7 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Posição</q-item-label>
+                  <q-item-label class="q-pb-xs">Posição *</q-item-label>
                   <q-input
                     ref="positionRef"
                     lazy-rules
@@ -252,14 +288,11 @@
                     flat
                     label="Cancelar"
                     color="negative"
-                    dense
                     v-close-popup
                   ></q-btn>
                   <q-btn
-                    flat
                     label="Cadastrar"
                     color="primary"
-                    dense
                     type="submit"
                   ></q-btn>
                 </q-card-actions>
@@ -388,36 +421,39 @@ export default {
       show_dialog,
 
       nameRef,
-      nameRules: [(val) => (val && val.length > 0) || "Por favor, digite algo"],
+      nameRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite o nome",
+      ],
 
       providerRef,
       providerRules: [
-        (val) => (val && val.length > 0) || "Por favor, digite algo",
+        (val) => (val && val.length > 0) || "Por favor, digite o provedor",
       ],
 
       scriptRef,
       scriptRules: [
-        (val) => (val && val.length > 0) || "Por favor, digite algo",
+        (val) => (val && val.length > 0) || "Por favor, digite o script",
       ],
 
       metadataRef,
       metadataRules: [
-        (val) => (val && val.length > 0) || "Por favor, digite algo",
+        (val) => (val && val.length > 0) || "Por favor, digite o metadados",
       ],
 
       charge_typeRef,
       charge_typeRules: [
-        (val) => (val && val.length > 0) || "Por favor, digite algo",
+        (val) =>
+          (val && val.length > 0) || "Por favor, digite o tipo de cobrança",
       ],
 
       billing_valueRef,
       billing_valueRules: [
-        (val) => (val && val.length > 0) || "Por favor, digite algo",
+        (val) => (val && val > 0 ) || "Por favor, digite o faturamento",
       ],
 
       positionRef,
       positionRules: [
-        (val) => (val && val.length > 0) || "Por favor, digite algo",
+        (val) => (val && val.length > 0) || "Por favor, digite a posição",
       ],
 
       /* function */
@@ -429,12 +465,12 @@ export default {
         this.show_dialog = true;
       },
       updateRow() {
-        console.log(currencyData)
         currencyData.value.splice(editedIndex.value, 1, editedItem.value);
         $q.notify({
           type: "positive",
           message: `Item '${editedItem.value.name}' atualizado.`,
         });
+        this.close();
       },
       deleteRow(item) {
         $q.dialog({
@@ -463,32 +499,10 @@ export default {
         };
         this.addedItem = defaultItemAdd;
         show_add_dialog.value = false;
+        show_dialog.value = false;
       },
-      /*       cancel() {
-        let defaultItemAdd = {
-          name: "",
-          provider: "",
-          script: "",
-          metadata: "",
-          charge_type: "",
-          billing_value: "",
-          positions: "",
-        };
-        this.addedItem = defaultItemAdd;
-      }, */
-      showModal() {
-        /*         let defaultItemAdd = {
-          name: "",
-          provider: "",
-          script: "",
-          metadata: "",
-          charge_type: "",
-          billing_value: "",
-          positions: "",
-        };
-        addedItem = defaultItemAdd */
 
-        console.log(addedItem.value);
+      showModal() {
         addedItem.value.name = null;
         addedItem.value.provider = null;
         addedItem.value.script = null;
@@ -499,6 +513,8 @@ export default {
         show_add_dialog.value = true;
       },
       addRow() {
+        let setBilling_value = parseInt(this.addedItem.billing_value);
+        this.addedItem.billing_value = setBilling_value;
         this.currencyData.push(this.addedItem);
 
         $q.notify({
@@ -528,6 +544,29 @@ export default {
           // form has error
         } else {
           this.addRow();
+        }
+      },
+      onSubmitUpdate() {
+        nameRef.value.validate();
+        providerRef.value.validate();
+        scriptRef.value.validate();
+        metadataRef.value.validate();
+        charge_typeRef.value.validate();
+        billing_valueRef.value.validate();
+        positionRef.value.validate();
+
+        if (
+          nameRef.value.hasError ||
+          providerRef.value.hasError ||
+          scriptRef.value.hasError ||
+          metadataRef.value.hasError ||
+          charge_typeRef.value.hasError ||
+          billing_valueRef.value.hasError ||
+          positionRef.value.hasError
+        ) {
+          // form has error
+        } else {
+          this.updateRow();
         }
       },
     };
