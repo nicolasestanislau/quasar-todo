@@ -1,1 +1,19 @@
 // app global css in SCSS form
+.imgHover {
+    display: flex;
+    justify-content: center;
+    img {
+      height: 78px;
+      transition: ease-in all 0.3s;
+    }
+    padding-bottom: 6px;
+  }
+  .imgHover:hover {
+    img {
+      height: 84px;
+      transition: ease-in all 0.3s;
+    }
+  }
+  .margin-top {
+    margin-top: 118px;
+  }

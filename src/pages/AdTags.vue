@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-grey-3 q-pa-lg">
-    <div class="imgHover absolute-top q-pa-lg">
+    <div class="imgHoverTable absolute-top q-pa-lg">
       <img
         src="https://istoe.com.br/wp-content/themes/tema_istoe/assets/svg/logo-istoe.svg"
       />
@@ -113,7 +113,9 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Tipo de Cobrança *</q-item-label>
+                  <q-item-label class="q-pb-xs"
+                    >Tipo de Cobrança *</q-item-label
+                  >
                   <q-input
                     ref="charge_typeRef"
                     lazy-rules
@@ -369,35 +371,7 @@ export default {
         align: "left",
       },
     ]);
-    const rows = ref([
-      {
-        name: "ad1",
-        provider: "google",
-        script: "some script",
-        metadata: "metadados",
-        charge_type: "cobrança 1",
-        billing_value: 50,
-        position: "top",
-      },
-      {
-        name: "ad2",
-        provider: "google",
-        script: "some script",
-        metadata: "metadados",
-        charge_type: "cobrança 1",
-        billing_value: 50,
-        position: "top",
-      },
-      {
-        name: "ad3",
-        provider: "google",
-        script: "some script",
-        metadata: "metadados",
-        charge_type: "cobrança 1",
-        billing_value: 50,
-        position: "top",
-      },
-    ]);
+    const rows = ref([]);
     const nameRef = ref(null);
     const providerRef = ref(null);
     const scriptRef = ref(null);
@@ -448,7 +422,7 @@ export default {
 
       billing_valueRef,
       billing_valueRules: [
-        (val) => (val && val > 0 ) || "Por favor, digite o faturamento",
+        (val) => (val && val > 0) || "Por favor, digite o faturamento",
       ],
 
       positionRef,
@@ -575,14 +549,14 @@ export default {
 </script>
 
 <style lang="scss">
-.imgHover {
+.imgHoverTable {
   img {
     height: 78px;
     transition: ease-in all 0.3s;
   }
   padding-bottom: 6px;
 }
-.imgHover {
+.imgHoverTable {
   img:hover {
     height: 84px;
     transition: ease-in all 0.3s;
@@ -590,7 +564,7 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .imgHover {
+  .imgHoverTable {
     display: flex;
     justify-content: center;
   }

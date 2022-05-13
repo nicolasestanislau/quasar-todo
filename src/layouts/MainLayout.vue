@@ -71,9 +71,8 @@
               src="https://avatars.githubusercontent.com/nicolasestanislau"
             />
           </q-avatar>
-          <div class="text-weight-bold">Nicolas Estanislau</div>
-          <div><a style="text-decoration: none; color:#fff" target="_blank" href="https://www.linkedin.com/in/nicolas-estanislau-048928175/">linkedin</a></div>
-        <div>@nicolas_zzz</div>
+          <div class="text-weight-bold">{{user.user_metadata.name}}</div>
+          <div class="text-weight-bold q-mt-sm cursor-pointer">Logout</div>
         </div>
       </q-img>
     </q-drawer>
@@ -89,67 +88,23 @@
 </template>
 
 <script>
+import useAuthUser from "src/composables/useAuthUser";
 import { defineComponent, ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
+import { useRouter } from "vue-router";
 import { date } from "quasar";
 
-const linksList = [
-  {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev",
-  },
-  {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-  },
-  {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
-  },
-  {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
-  },
-];
 
 export default defineComponent({
   name: "MainLayout",
 
-  components: {
-    EssentialLink,
-  },
+
 
   setup() {
+    const { user } = useAuthUser();
     const leftDrawerOpen = ref(false);
 
     return {
-      essentialLinks: linksList,
+      user,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
