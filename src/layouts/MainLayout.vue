@@ -35,7 +35,7 @@
         "
       >
         <q-list padding>
-          <q-item to="/" exact clickable v-ripple>
+          <q-item to="/todo" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="list" />
             </q-item-section>
@@ -66,13 +66,19 @@
         style="height: 192px"
       >
         <div class="absolute-bottom bg-transparent">
-          <q-avatar size="56px" class="q-mb-sm">
+          <q-avatar @click="handleProfile" size="56px" class="q-mb-sm cursor-pointer">
             <img
               src="https://avatars.githubusercontent.com/nicolasestanislau"
             />
           </q-avatar>
-          <div class="text-weight-bold">{{user.user_metadata.name}}</div>
-          <div class="text-weight-bold q-mt-sm cursor-pointer">Logout</div>
+
+          <div @click="handleProfile" class="text-weight-bold cursor-pointer">{{ user.user_metadata.name }}</div>
+          <div
+            @click="handleLogout"
+            class="text-weight-bold q-mt-sm cursor-pointer"
+          >
+            Sair
+          </div>
         </div>
       </q-img>
     </q-drawer>
@@ -91,21 +97,38 @@
 import useAuthUser from "src/composables/useAuthUser";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { date } from "quasar";
-
+import { date, useQuasar } from "quasar";
 
 export default defineComponent({
   name: "MainLayout",
 
-
-
   setup() {
-    const { user } = useAuthUser();
+    const $q = useQuasar();
+    const router = useRouter();
+    const { user, logout } = useAuthUser();
     const leftDrawerOpen = ref(false);
+
+    const handleLogout = async () => {
+      $q.dialog({
+        title: "Sair",
+        message: "você realmente quer sair?",
+        cancel: true,
+        persistent: true,
+      }).onOk(async () => {
+        await logout();
+        router.replace({ name: "login" });
+      });
+    };
+
+    const handleProfile = async () => {
+      router.push({ name: "me"})
+    }
 
     return {
       user,
       leftDrawerOpen,
+      handleLogout,
+      handleProfile,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },

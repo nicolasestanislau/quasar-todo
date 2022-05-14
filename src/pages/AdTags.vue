@@ -1,12 +1,12 @@
 <template>
   <q-page class="bg-grey-3 q-pa-lg">
     <div class="imgHoverTable absolute-top q-pa-lg">
-      <img
-        src="https://istoe.com.br/wp-content/themes/tema_istoe/assets/svg/logo-istoe.svg"
-      />
       <!--       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/1/13/LOGO_OF_LOGO.svg"
+        src="https://istoe.com.br/wp-content/themes/tema_istoe/assets/svg/logo-istoe.svg"
       /> -->
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/1/13/LOGO_OF_LOGO.svg"
+      />
     </div>
     <div class="tableContainer">
       <q-btn @click="showModal" color="primary" label="Novo Anúncio" />

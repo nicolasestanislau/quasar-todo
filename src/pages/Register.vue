@@ -10,11 +10,30 @@
     </div>
     <form class="row justify-center" @submit.prevent="handleRegister">
       <p class="col-12 text-h5 text-center margin-top">Cadastro</p>
-      <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-        <q-input label="Nome" outlined v-model="form.name"> </q-input>
-        <q-input label="E-mail" type="email" outlined v-model="form.email">
+      <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-sm">
+        <q-input
+          ref="nameRef"
+          lazy-rules
+          :rules="nameRules"
+          label="Nome"
+          outlined
+          v-model="form.name"
+        >
         </q-input>
         <q-input
+          ref="emailRef"
+          lazy-rules
+          :rules="emailRules"
+          label="E-mail"
+          type="email"
+          outlined
+          v-model="form.email"
+        >
+        </q-input>
+        <q-input
+          ref="passwordRef"
+          lazy-rules
+          :rules="passwordRules"
           label="Senha"
           v-model="form.password"
           :type="isPwd ? 'password' : 'text'"
@@ -37,6 +56,15 @@
             outline
           />
         </div>
+        <div class="full-width">
+          <q-btn
+            label="Voltar"
+            color="negative"
+            class="full-width"
+            @click="goBack"
+            flat
+          />
+        </div>
       </div>
     </form>
   </q-page>
@@ -49,6 +77,9 @@ import { useRouter } from "vue-router";
 
 export default {
   setup() {
+    const nameRef = ref(null);
+    const emailRef = ref(null);
+    const passwordRef = ref(null);
     const router = useRouter();
     const { register } = useAuthUser();
     const form = ref({
@@ -57,20 +88,55 @@ export default {
       password: "",
     });
     const handleRegister = async () => {
-      try {
-        await register(form.value);
-        router.push({
-          name: "email-confirmation",
-          query: { email: form.value.email },
-        });
-      } catch (error) {
-        alert(error.message);
+      nameRef.value.validate();
+      emailRef.value.validate();
+      passwordRef.value.validate();
+      if (
+        emailRef.value.hasError ||
+        nameRef.value.hasError ||
+        passwordRef.value.hasError
+      ) {
+        // form has error
+      } else {
+        try {
+          await register(form.value);
+          router.push({
+            name: "email-confirmation",
+            query: { email: form.value.email },
+          });
+        } catch (error) {
+          if (error.status == 422 && form.value.password == "") {
+            alert("O cadastrado requer uma senha válida");
+          } else if (
+            error.message == "Password should be at least 6 characters"
+          ) {
+            alert("A senha deve ter pelo menos 6 caracteres");
+          }
+        }
       }
+    };
+    const goBack = async () => {
+      router.replace({ name: "login" });
     };
     return {
       isPwd: ref(true),
       handleRegister,
+      goBack,
       form,
+      nameRef,
+      nameRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite o nome",
+      ],
+      emailRef,
+      emailRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite o email",
+      ],
+      passwordRef,
+      passwordRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite a senha",
+        (val) =>
+          (val && val.length > 5) || "A senha deve ter pelo menos 6 caracteres",
+      ],
     };
   },
 };

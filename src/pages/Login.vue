@@ -12,9 +12,21 @@
       <p class="col-12 text-h5 text-center margin-top">
         Gerenciador de anúncios
       </p>
-      <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-        <q-input label="E-mail" type="email" v-model="form.email" outlined> </q-input>
+      <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-sm">
         <q-input
+          ref="emailRef"
+          lazy-rules
+          :rules="emailRules"
+          label="E-mail"
+          type="email"
+          v-model="form.email"
+          outlined
+        >
+        </q-input>
+        <q-input
+          ref="passwordRef"
+          lazy-rules
+          :rules="passwordRules"
           label="Senha"
           v-model="form.password"
           :type="isPwd ? 'password' : 'text'"
@@ -57,6 +69,8 @@ import useAuthUser from "src/composables/useAuthUser";
 import { useRouter } from "vue-router";
 export default {
   setup() {
+    const emailRef = ref(null);
+    const passwordRef = ref(null);
     const router = useRouter();
     const { login } = useAuthUser();
     const form = ref({
@@ -64,19 +78,36 @@ export default {
       password: "",
     });
     const handleLogin = async () => {
-      try {
-        await login(form.value);
-        router.push({ name: "me" });
-      } catch (error) {
-        alert(error.message);
+      emailRef.value.validate();
+      passwordRef.value.validate();
+      if (emailRef.value.hasError || passwordRef.value.hasError) {
+        // form has error
+      } else {
+        try {
+          await login(form.value);
+          router.push({ name: "me" });
+        } catch (error) {
+          if (error.status == 400) {
+            alert("Credenciais de login inválidas");
+          }
+        }
       }
     };
     return {
       isPwd: ref(true),
       handleLogin,
       form,
+      emailRef,
+      emailRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite o email",
+      ],
+      passwordRef,
+      passwordRules: [
+        (val) => (val && val.length > 0) || "Por favor, digite a senha",
+        (val) =>
+          (val && val.length > 5) || "A senha deve ter pelo menos 6 caracteres",
+      ],
     };
   },
 };
 </script>
-
