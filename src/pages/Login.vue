@@ -127,19 +127,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-#divError {
-  justify-content: center;
-  align-items: center;
-
-  color: $negative;
-  span {
-    margin-right: 10px;
-  }
-  background-color: rgba(255, 0, 0, 0.3);
-  border-radius: 4px;
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 20px;
-}
-</style>
