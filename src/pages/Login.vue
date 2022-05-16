@@ -50,16 +50,26 @@
             color="primary"
             class="full-width"
             type="submit"
-            outline
           />
         </div>
-        <div class="full-width">
+        <div class="full-width q-mt-md">
           <q-btn
             label="Cadastrar"
             color="primary"
             class="full-width"
-            to="/register"
+            :to="{ name: 'register' }"
+            outline
+            dense
+          />
+        </div>
+        <div class="full-width">
+          <q-btn
+            label="Esqueceu sua senha?"
+            color="primary"
+            class="full-width"
+            :to="{ name: 'forgotpassword'}"
             flat
+            size="sm"
           />
         </div>
       </div>

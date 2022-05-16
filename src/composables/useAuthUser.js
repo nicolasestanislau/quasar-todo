@@ -61,6 +61,5 @@ export default function useAuthUser() {
     register,
     update,
     sendPasswordRestEmail,
-    
   };
 }

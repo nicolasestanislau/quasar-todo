@@ -35,7 +35,7 @@
         "
       >
         <q-list padding>
-          <q-item to="/todo" exact clickable v-ripple>
+          <q-item :to="{ name: 'todo' }" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="list" />
             </q-item-section>
@@ -43,14 +43,14 @@
             <q-item-section> Todo </q-item-section>
           </q-item>
 
-          <q-item to="/adtags" exact clickable v-ripple>
+          <q-item :to="{ name: 'adtags' }" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="article" />
             </q-item-section>
 
             <q-item-section> Anúncios </q-item-section>
           </q-item>
-          <q-item to="/help" exact clickable v-ripple>
+          <q-item :to="{ name: 'help' }" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="help" />
             </q-item-section>
@@ -66,13 +66,19 @@
         style="height: 192px"
       >
         <div class="absolute-bottom bg-transparent">
-          <q-avatar @click="handleProfile" size="56px" class="q-mb-sm cursor-pointer">
+          <q-avatar
+            @click="handleProfile"
+            size="56px"
+            class="q-mb-sm cursor-pointer"
+          >
             <img
               src="https://avatars.githubusercontent.com/nicolasestanislau"
             />
           </q-avatar>
 
-          <div @click="handleProfile" class="text-weight-bold cursor-pointer">{{ user.user_metadata.name }}</div>
+          <div @click="handleProfile" class="text-weight-bold cursor-pointer">
+            {{ user.user_metadata.name }}
+          </div>
           <div
             @click="handleLogout"
             class="text-weight-bold q-mt-sm cursor-pointer"
@@ -121,8 +127,8 @@ export default defineComponent({
     };
 
     const handleProfile = async () => {
-      router.push({ name: "me"})
-    }
+      router.push({ name: "me" });
+    };
 
     return {
       user,

@@ -53,7 +53,6 @@
             color="primary"
             class="full-width"
             type="submit"
-            outline
           />
         </div>
         <div class="full-width">
@@ -101,10 +100,11 @@ export default {
         try {
           await register(form.value);
           router.push({
-            name: "email-confirmation",
+            name: "emailconfirmation",
             query: { email: form.value.email },
           });
         } catch (error) {
+          /* essa parte posso remover */
           if (error.status == 422 && form.value.password == "") {
             alert("O cadastrado requer uma senha válida");
           } else if (

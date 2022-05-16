@@ -9,19 +9,24 @@ const routes = [
         component: () => import("src/pages/Login.vue"),
       },
       {
-        path: "/login",
+        path: "login",
         name: "login",
         component: () => import("src/pages/Login.vue"),
       },
       {
-        path: "/register",
+        path: "register",
         name: "register",
         component: () => import("src/pages/Register.vue"),
       },
       {
-        path: "/emailconfirmation",
-        name: "email-confirmation",
+        path: "emailconfirmation",
+        name: "emailconfirmation",
         component: () => import("src/pages/EmailConfirmation.vue"),
+      },
+      {
+        path: "forgotpassword",
+        name: "forgotpassword",
+        component: () => import("src/pages/ForgotPassword.vue"),
       },
     ],
   },
@@ -29,10 +34,22 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "/todo", component: () => import("src/pages/Todo.vue") },
-      { path: "/me", name: "me", component: () => import("src/pages/Me.vue") },
-      { path: "/help", component: () => import("src/pages/Help.vue") },
-      { path: "/adtags", component: () => import("src/pages/AdTags.vue") },
+      {
+        path: "todo",
+        name: "todo",
+        component: () => import("src/pages/Todo.vue"),
+      },
+      { path: "me", name: "me", component: () => import("src/pages/Me.vue") },
+      {
+        path: "help",
+        name: "help",
+        component: () => import("src/pages/Help.vue"),
+      },
+      {
+        path: "adtags",
+        name: "adtags",
+        component: () => import("src/pages/AdTags.vue"),
+      },
     ],
     meta: {
       requiresAuth: true,
