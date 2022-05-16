@@ -13,6 +13,10 @@
         Gerenciador de anúncios
       </p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-sm">
+        <div id="divError" style="display: none" class="text-center">
+          <span></span>
+          <q-icon name="error" />
+        </div>
         <q-input
           ref="emailRef"
           lazy-rules
@@ -40,7 +44,7 @@
             />
           </template>
         </q-input>
-        <div class="full-width q-pt-md">
+        <div class="full-width">
           <q-btn
             label="Entrar"
             color="primary"
@@ -88,7 +92,9 @@ export default {
           router.push({ name: "me" });
         } catch (error) {
           if (error.status == 400) {
-            alert("Credenciais de login inválidas");
+            document.getElementById("divError").childNodes[0].innerHTML =
+              "Credenciais de login inválidas";
+            document.getElementById("divError").style.display = "flex";
           }
         }
       }
@@ -111,3 +117,19 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#divError {
+  justify-content: center;
+  align-items: center;
+
+  color: $negative;
+  span {
+    margin-right: 10px;
+  }
+  background-color: rgba(255, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 20px;
+}
+</style>

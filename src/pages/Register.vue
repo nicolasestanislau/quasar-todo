@@ -47,7 +47,7 @@
             />
           </template>
         </q-input>
-        <div class="full-width q-pt-md">
+        <div class="full-width">
           <q-btn
             label="Cadastrar"
             color="primary"
@@ -61,7 +61,7 @@
             label="Voltar"
             color="negative"
             class="full-width"
-            @click="goBack"
+            :to="{ name: 'login' }"
             flat
           />
         </div>
@@ -115,13 +115,9 @@ export default {
         }
       }
     };
-    const goBack = async () => {
-      router.replace({ name: "login" });
-    };
     return {
       isPwd: ref(true),
       handleRegister,
-      goBack,
       form,
       nameRef,
       nameRules: [
